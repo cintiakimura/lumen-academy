@@ -304,7 +304,7 @@ export default function Chat() {
         const last = e.results[e.results.length - 1] as { isFinal: boolean; 0?: { transcript: string; confidence: number } } | undefined;
         const transcript = last?.[0]?.transcript ?? '';
         const confident = last?.isFinal && (last?.[0]?.confidence ?? 0) >= VOICE_CONFIDENCE_SEND;
-        if (last.isFinal && transcript.trim()) {
+        if (last?.isFinal && transcript.trim()) {
           if (confident) {
             setInput('');
             responseStartRef.current = Date.now();

@@ -8,7 +8,7 @@ export function generateCertificate(params: {
 }): void {
   const { blockTitle, learnerName, learnerEmail, filename } = params;
   const doc = new jsPDF();
-  const pageW = doc.getInternalPageSize().width;
+  const pageW = (doc as { internal: { pageSize: { getWidth(): number } } }).internal.pageSize.getWidth();
   const margin = 20;
   let y = 30;
 
