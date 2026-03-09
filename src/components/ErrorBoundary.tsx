@@ -1,39 +1,32 @@
-import { Component, type ErrorInfo, type ReactNode } from 'react';
-
-interface Props {
-  children: ReactNode;
-  fallback?: ReactNode;
-}
+import React from 'react';
 
 interface State {
   hasError: boolean;
-  error: Error | null;
 }
 
-export class ErrorBoundary extends Component<Props, State> {
-  state: State = { hasError: false, error: null };
+export class ErrorBoundary extends React.Component<{ children: React.ReactNode }, State> {
+  state: State = { hasError: false };
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  static getDerivedStateFromError(): State {
+    return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    console.error('[Lumen] ErrorBoundary:', error, errorInfo);
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    console.error('ErrorBoundary caught:', error, errorInfo);
   }
 
-  render(): ReactNode {
+  render(): React.ReactNode {
     if (this.state.hasError) {
-      if (this.props.fallback) return this.props.fallback;
       return (
-        <div className="page" style={{ textAlign: 'center', paddingTop: '3rem' }}>
-          <h1 style={{ fontSize: '1.5rem' }}>Something went wrong</h1>
-          <p style={{ color: '#555', marginTop: '0.5rem' }}>
-            Refresh the page or try again later.
+        <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#FAFAFA] text-gray-800">
+          <h1 className="text-xl font-medium mb-2">Something went wrong</h1>
+          <p className="text-gray-500 mb-6 text-center max-w-md">
+            An unexpected error occurred. Try again or refresh the page.
           </p>
           <button
             type="button"
-            onClick={() => this.setState({ hasError: false, error: null })}
-            style={{ marginTop: '1rem' }}
+            onClick={() => this.setState({ hasError: false })}
+            className="px-6 py-3 rounded-2xl bg-teal-600 text-white hover:bg-teal-700 transition-colors"
           >
             Try again
           </button>
